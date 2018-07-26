@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     BluetoothAdapter mBluetoothAdapter;
     Button btnEnabledDisabledDiscoverability, discover;
     public static String TAG = "MainActivity";
-    public ArrayList<BluetoothDevice> mBTDevices = new ArrayList<>();
+    public ArrayList<BluetoothDevice> mBTDevices;
     public DeviceListAdapter mDeviceListAdapter;
     ListView listView;
 
@@ -112,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
         discover = (Button) findViewById(R.id.btn_3);
         listView = (ListView) findViewById(R.id.lvNewDevices);
 
+        mBTDevices = new ArrayList<>();
+
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -156,10 +158,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void checkBTPermissions() {
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP){
-            int permissionsCheck = this.checkSelfPermission("Manifest.permission.ACCES_FINE_LOCATION");
-            permissionsCheck += this.checkSelfPermission("Manifest.permission.ACCES_COARSE_LOCATION");
-            if (permissionsCheck != 0){
-                this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+            int permissionsCheck = 0;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                permissionsCheck = this.checkSelfPermission("Manifest.permission.ACCES_FINE_LOCATION");
+                permissionsCheck += this.checkSelfPermission("Manifest.permission.ACCES_COARSE_LOCATION");
+
+                if (permissionsCheck != 0){
+                    this.requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1001);
+                }
             }
         }
     }
