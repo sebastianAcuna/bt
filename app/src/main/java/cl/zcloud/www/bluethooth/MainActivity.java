@@ -87,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
             final String action = intent.getAction();
             if (Objects.requireNonNull(action).equals(BluetoothDevice.ACTION_FOUND)){
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
                 mBTDevices.add(device);
                 Log.d(TAG, "onReceive: " +  device.getName() + " : " +  device.getAddress());
                 mDeviceListAdapter = new DeviceListAdapter(context, R.layout.device_adapter_view, mBTDevices);
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         discover = (Button) findViewById(R.id.btn_3);
         listView = (ListView) findViewById(R.id.lvNewDevices);
 
-        mBTDevices = new ArrayList<>();
+
 
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -136,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void btnDiscover() {
         Log.d(TAG, "btnDiscover:click on discovered ");
+        mBTDevices = new ArrayList<>();
         if (mBluetoothAdapter.isDiscovering()){
             mBluetoothAdapter.cancelDiscovery();
             Log.d(TAG, "btnDiscover: Canceling discovering ");
